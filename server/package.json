@@ -5,9 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server:start": "nodemon ./index.js",
-    "server:test": "nodemon ./__test__.js"
+    "start": "nodemon ./index.js",
+    "test": "nodemon ./__test__.js",
+    "server:start": "pm2 start server/index.js --name=anydrop",
+    "server:restart": "pm2 restart anydrop"
   },
   "keywords": [],
   "author": "",

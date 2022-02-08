@@ -4,9 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:client": "cd client && npm run build",
-    "server:start": "pm2 start server/index.js --name=anydrop",
-    "server:restart": "pm2 restart anydrop"
+    "build:client": "cd client && npm run build"
   },
   "repository": {
     "type": "git",
