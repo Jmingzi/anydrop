@@ -52,7 +52,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.TOKEN }}
           REMOTE_HOST: 1.117.74.21
           REMOTE_USER: root
-          SOURCE: client/dist
+          SOURCE: client/dist/
           TARGET: /home/anydrop/
 
       - name: deploy server
@@ -61,7 +61,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.TOKEN }}
           REMOTE_HOST: 1.117.74.21
           REMOTE_USER: root
-          SOURCE: server/dist
+          SOURCE: server/dist/
           TARGET: /home/anydrop-server/
 
       - name: restart server
