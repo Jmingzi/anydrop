@@ -62,5 +62,11 @@ jobs:
           REMOTE_USER: root
           SOURCE: server/
           TARGET: /home/anydrop-server/
-          script: cd /home/anydrop-server/ && npm install && npm run server:start
 
+      - name: restart server
+        uses: appleboy/ssh-action@master
+        with:
+          host: 1.117.74.21
+          username: root
+          password: ${{ secrets.TOKEN }}
+          script: cd /home/anydrop-server/ && npm install && npm run server:start
