@@ -7,7 +7,7 @@
   "scripts": {
     "start": "nodemon ./index.js",
     "test": "nodemon ./__test__.js",
-    "build": "babel ./ --out-dir ./dist --ignore \"node_modules/**/*\",\"dist/**/*\"",
+    "build": "babel ./ --out-dir ./dist --ignore \"node_modules/**/*\",\"dist/**/*\" --plugins=@babel/plugin-transform-modules-commonjs",
     "server:start": "pm2 start index.js --name=anydrop",
     "server:restart": "pm2 restart anydrop"
   },
@@ -22,6 +22,7 @@
   "devDependencies": {
     "@babel/cli": "^7.17.0",
     "@babel/core": "^7.17.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.16.8",
     "nodemon": "^2.0.15"
   }
 }
