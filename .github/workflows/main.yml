@@ -68,5 +68,5 @@ jobs:
         with:
           host: 1.117.74.21
           username: root
-          password: ${{ secrets.TOKEN }}
+          key: ${{ secrets.TOKEN }}
           script: cd /home/anydrop-server/ && npm install && npm run server:start
