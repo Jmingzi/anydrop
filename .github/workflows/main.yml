@@ -41,7 +41,7 @@ jobs:
       - name: Run build
         run: |
           npm --version
-          npm run "build"
+          npm run "build:client"
         env:
           CI: true
 
