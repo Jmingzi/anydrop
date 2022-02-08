@@ -7,7 +7,8 @@
   "scripts": {
     "start": "nodemon ./index.js",
     "test": "nodemon ./__test__.js",
-    "server:start": "pm2 start server/index.js --name=anydrop",
+    "build": "babel ./ --out-dir ./dist --ignore \"node_modules/**/*\",\"dist/**/*\"",
+    "server:start": "pm2 start index.js --name=anydrop",
     "server:restart": "pm2 restart anydrop"
   },
   "keywords": [],
@@ -19,6 +20,8 @@
     "ws": "^8.4.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.17.0",
+    "@babel/core": "^7.17.0",
     "nodemon": "^2.0.15"
   }
 }
