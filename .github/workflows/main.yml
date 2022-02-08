@@ -61,7 +61,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.TOKEN }}
           REMOTE_HOST: 1.117.74.21
           REMOTE_USER: root
-          SOURCE: server/
+          SOURCE: server/dist
           TARGET: /home/anydrop-server/
 
       - name: restart server
@@ -70,4 +70,4 @@ jobs:
           host: 1.117.74.21
           username: root
           key: ${{ secrets.TOKEN }}
-          script: cd /home/anydrop-server/ && npm install && npm run server:start
+          script: cd /home/anydrop-server/ && npm install && npm run server:restart
