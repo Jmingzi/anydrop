@@ -35,7 +35,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: install
-        run: npm install
+        run: cd client && npm install
 
       # Runs a set of commands using the runners shell
       - name: Run build
@@ -62,5 +62,5 @@ jobs:
           REMOTE_USER: root
           SOURCE: server/
           TARGET: /home/anydrop-server/
-          script: cd /home/anydrop-server/ && npm run server:start
+          script: cd /home/anydrop-server/ && npm install && npm run server:start
 
