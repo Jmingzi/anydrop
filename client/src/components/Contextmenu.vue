@@ -50,6 +50,10 @@ function copyText () {
   document.execCommand('copy')
   document.body.removeChild(input)
 }
+
+function handleClick () {
+  document.body.click()
+}
 </script>
 
 <template>
@@ -57,6 +61,7 @@ function copyText () {
     v-if="show"
     class="msg__contextmenu"
     :style="style"
+    @click.stop="handleClick"
   >
     <div v-if="isText" class="msg__contextmenu-item" @click="copyText">
       <span>复制</span>

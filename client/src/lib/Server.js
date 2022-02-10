@@ -12,10 +12,12 @@ import { MESSAGE_TYPE, MESSAGE } from '../../../server/constant'
 
 export class Server {
   socket = null
+  reconnectTimer = null
 
   constructor() {
     this.connect()
     window.addEventListener('beforeunload', () => this.disconnect())
+    window.addEventListener('pagehide', () => this.disconnect())
     // document.addEventListener('visibilitychange', () => this.onVisibilityChange())
   }
 
@@ -32,7 +34,7 @@ export class Server {
       initStore(this)
     }
     this.socket.onmessage = e => this.onMessage(e.data)
-    this.socket.onclose = e => this.disconnect(e)
+    this.socket.onclose = e => this.onDisconnect(e)
     this.socket.onerror = e => console.error(e)
   }
 
@@ -73,6 +75,9 @@ export class Server {
         case MESSAGE_TYPE.PROGRESS:
           setFileReceiptProgress(message.data)
           break
+        case MESSAGE_TYPE.PING:
+          this.send({ type: MESSAGE_TYPE.PONG })
+          break
         default:
           console.warn('unknown message type:', message.type)
       }
@@ -90,6 +95,15 @@ export class Server {
     } else {
       console.log('this.socket is null')
     }
+  }
+
+  onDisconnect () {
+    console.log('WS: server closed, Retry in 5 seconds...')
+    if (this.reconnectTimer) {
+      clearTimeout(this.reconnectTimer)
+      this.reconnectTimer = null
+    }
+    this.reconnectTimer = setTimeout(() => this.connect(), 5000)
   }
 
   onVisibilityChange () {

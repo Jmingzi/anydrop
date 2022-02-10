@@ -4,7 +4,10 @@ export const MESSAGE_TYPE = {
   SELF: 'self',
   MSG: 'message',
   RECEIPT: 'receipt',
-  PROGRESS: 'progress'
+  PROGRESS: 'progress',
+  PING: 'ping',
+  PONG: 'pong',
+  DISCONNECT: 'disconnect'
 }
 
 export const MESSAGE_STATUS = {

@@ -35,7 +35,31 @@ export class Server {
     user.socket.on('message', (message) => {
       this.onMessage(user, message)
     })
+    this.keepAlive(user)
     console.log(`有新用户加入：${user.id}，当前在线人数：${this.getRooms({}).length}`)
+  }
+
+  keepAlive (user) {
+    this.cancelKeepAlive(user)
+    const timeout = 30000
+    if (!user.lastBeat) {
+      user.lastBeat = Date.now()
+    }
+    if (Date.now() - user.lastBeat > timeout) {
+      this.leaveRoom(user)
+    } else {
+      this.send(user, { type: MESSAGE_TYPE.PING })
+      user.timerId = setTimeout(() => {
+        this.keepAlive(user)
+      }, timeout)
+    }
+  }
+
+  cancelKeepAlive (user) {
+    if (user && user.timerId) {
+      clearTimeout(user.timerId)
+      user.timerId = null
+    }
   }
 
   joinRoom (user) {
@@ -55,12 +79,12 @@ export class Server {
       let needBroadcast = false
       message = JSON.parse(message)
       switch (message.type) {
-        case 'disconnect':
+        case MESSAGE_TYPE.DISCONNECT:
           this.leaveRoom(sender)
           break
-        // case 'pong':
-        //   sender.lastBeat = Date.now();
-        //   break;
+        case MESSAGE_TYPE.PONG:
+          sender.lastBeat = Date.now()
+          break
         case MESSAGE_TYPE.ROOMS:
           this.send(sender, {
             type: MESSAGE_TYPE.ROOMS,

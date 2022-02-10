@@ -6,6 +6,8 @@ export class User {
   name = ''
   ip = ''
   socket = null
+  timerId = null
+  lastBeat = null
   constructor (socket, request) {
     this.socket = socket
     this.setIp(request)
