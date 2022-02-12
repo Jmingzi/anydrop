@@ -39,6 +39,9 @@ watch(() => msgList.value.length, () => {
   overflow: auto;
   padding-bottom: 100px;
 }
+.mobile .chat-record {
+  height: calc(100vh - 107px);
+}
 .chat-record__title {
   position: sticky;
   top: 0;

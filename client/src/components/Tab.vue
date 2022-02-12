@@ -1,9 +1,11 @@
 <script setup>
+import { inject } from 'vue'
 
+const mobile = inject('mobile', false)
 </script>
 
 <template>
-  <div class="tab"></div>
+  <div v-if="!mobile" class="tab"></div>
 </template>
 
 <style>

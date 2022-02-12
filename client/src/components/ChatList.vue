@@ -1,12 +1,14 @@
 <script setup>
 import Avatar from './Avatar.vue'
 import { useStore } from '../store'
+import { inject } from 'vue'
 
 const { chatList, self } = useStore()
+const mobile = inject('mobile', false)
 </script>
 
 <template>
-  <div class="chat-list">
+  <div v-if="!mobile" class="chat-list">
     <div class="chat-list__top">
       <div class="chat-list__search">
         <span>搜索</span>

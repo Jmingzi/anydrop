@@ -1,11 +1,15 @@
 <script setup>
 import ChatWindow from './components/ChatWindow.vue'
 import FilePreviewer from './components/FilePreviewer.vue'
+import { provide } from 'vue'
+
+const mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+provide('mobile', mobile)
 </script>
 
 <template>
-  <ChatWindow />
-  <FilePreviewer />
+  <ChatWindow :class="{ mobile }" />
+  <FilePreviewer :class="{ mobile }" />
 </template>
 
 <style>

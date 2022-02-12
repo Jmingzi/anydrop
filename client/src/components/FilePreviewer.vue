@@ -41,6 +41,9 @@ const isText = computed(() => type.value.includes('text') || type.value.includes
   border-radius: 10px;
   overflow: hidden;
 }
+.file-previewer.mobile {
+  width: 90%;
+}
 .file-previewer__title {
   display: flex;
   align-items: center;

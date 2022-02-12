@@ -13,7 +13,7 @@ import Chat from './Chat.vue'
 </template>
 
 <style>
-.chat-window {
+.chat-window:not(.mobile) {
   display: flex;
   width: 927px;
   height: 694px;
@@ -24,5 +24,7 @@ import Chat from './Chat.vue'
   transform: translate(-50%, -50%);
   border: 1px #eee solid;
   border-radius: 10px;
+}
+.chat-window {
 }
 </style>
