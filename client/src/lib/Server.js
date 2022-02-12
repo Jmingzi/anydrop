@@ -62,6 +62,7 @@ export class Server {
           setSelf(message.data)
           break
         case MESSAGE_TYPE.SYSTEM:
+          console.log(message.data)
           getRooms()
           break
         case MESSAGE_TYPE.MSG:

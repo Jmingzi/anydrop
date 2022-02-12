@@ -82,7 +82,6 @@ export class Server {
       message = JSON.parse(message)
       switch (message.type) {
         case MESSAGE_TYPE.DISCONNECT:
-          needBroadcast = true
           this.leaveRoom(sender)
           break
         case MESSAGE_TYPE.PONG:
