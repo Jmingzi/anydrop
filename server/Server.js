@@ -11,8 +11,8 @@ export class Server {
   rooms = {}
   wss = null
 
-  constructor (port = 8000) {
-    this.wss = new WebSocketServer({ port })
+  constructor (params) {
+    this.wss = new WebSocketServer(params)
     this.wss.on('connection', (socket, request) => {
       const user = new User(socket, request)
       this.onConnection(user)
