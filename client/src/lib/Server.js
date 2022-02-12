@@ -18,7 +18,7 @@ export class Server {
     this.connect()
     window.addEventListener('beforeunload', () => this.disconnect())
     window.addEventListener('pagehide', () => this.disconnect())
-    // document.addEventListener('visibilitychange', () => this.onVisibilityChange())
+    document.addEventListener('visibilitychange', () => this.onVisibilityChange())
   }
 
   connect() {
