@@ -16,8 +16,8 @@ const mobile = inject('mobile', false)
     </div>
 
     <div
-      v-for="(chat, index) in chatList"
-      :key="index"
+      v-for="chat in chatList"
+      :key="chat.id"
       class="chat-list__item"
       :class="{
         active: chat.id === self.id

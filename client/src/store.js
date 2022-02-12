@@ -110,6 +110,7 @@ export function setSelf (data) {
 }
 
 export function setChatList (data) {
+  console.log('聊天人数', ${data.length})
   chatList.value = data
   if (self.value) {
     setSelf(self.value)
