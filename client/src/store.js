@@ -42,6 +42,9 @@ export function sendMessage (data) {
   const message = getMessageData(data)
   addToMsgList(message, false)
   send(MESSAGE_TYPE.MSG, message)
+  if (chatList.value.length === 1) {
+    setMsgReceipt({ id: message.id, status: MESSAGE_STATUS.ERROR_NO_USER })
+  }
   return message
 }
 
@@ -83,7 +86,7 @@ export function addToMsgList (data, receipt = true) {
   // 文件回执处理
   if (data.type === MESSAGE.FILE) {
     const digester = new FileDigester(data.data, blob => {
-      // console.log('文件接收完成', digester.progress, data)
+      console.log('文件接收完成', data)
       updateMsgById(data.id, { blob })
       // todo delete digesterMap[data.id]
     })
@@ -126,11 +129,17 @@ export function sendFile (file) {
       originSender
     })
     if (fileChunk.isFileEnd()) {
-      // console.log(file, file.slice())
-      updateMsgById(originMsgId, {
+      console.log('文件发送完成')
+      const data = {
         status: MESSAGE_STATUS.SENT,
         blob: new Blob([file.slice()], { type: file.type })
-      })
+      }
+      if (chatList.value.length === 1) {
+        // 只有自己
+        data.status = MESSAGE_STATUS.ERROR_NO_USER
+        data.progress = 1
+      }
+      updateMsgById(originMsgId, data)
     }
   })
 }

@@ -15,7 +15,8 @@ export const MESSAGE_STATUS = {
   SENT: 'SENT',
   // DELIVERED: 'DELIVERED',
   // READ: 'READ',
-  ERROR: 'ERROR'
+  ERROR: 'ERROR',
+  ERROR_NO_USER: 'ERROR_NO_USER'
 }
 
 export const MESSAGE = {

@@ -31,7 +31,8 @@ provide('position', contextPosition)
 const statusText = {
   [MESSAGE_STATUS.SENDING]: '发送中',
   [MESSAGE_STATUS.SENT]: '已发送',
-  [MESSAGE_STATUS.ERROR]: '发送失败'
+  [MESSAGE_STATUS.ERROR]: '发送失败',
+  [MESSAGE_STATUS.ERROR_NO_USER]: '没有找到用户'
 }
 
 const isText = computed(() => props.msg.type === 'text')
