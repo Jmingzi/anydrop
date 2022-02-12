@@ -1,5 +1,5 @@
 <script setup>
-import { useFilePreviewer, closePreview } from './file-previewer'
+import { useFilePreviewer, closePreview, downloadPreview } from './file-previewer'
 import { computed } from 'vue'
 
 const { content, show, type } = useFilePreviewer()
@@ -21,8 +21,8 @@ const isText = computed(() => type.value.includes('text') || type.value.includes
       <div v-else-if="isText" class="file-previewer__text">
         <pre>{{ content }}</pre>
       </div>
-      <span v-else style="color: #fff">
-        暂不支持预览，请下载
+      <span v-else style="color: #fff" @click="downloadPreview()">
+        暂不支持预览，请点击下载
       </span>
     </div>
   </div>

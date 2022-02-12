@@ -7,10 +7,11 @@ const state = reactive({
   content: ''
 })
 
-export function setState (blob, type) {
+export function setState (blob, type, name) {
   state.show = true
   state.blob = blob
   state.type = type
+  state.name = name
 
   const reader = new FileReader()
   if (state.type.indexOf('image') > -1) {
@@ -40,6 +41,10 @@ export function downloadBlob (blob, filename) {
   a.download = filename
   a.click()
   window.URL.revokeObjectURL(url)
+}
+
+export function downloadPreview () {
+  downloadBlob(state.blob, state.name)
 }
 
 export function useFilePreviewer () {

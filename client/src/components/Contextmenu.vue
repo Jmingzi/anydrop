@@ -31,7 +31,7 @@ const style = computed(() => {
 
 function openFile () {
   if (msg.value.blob) {
-    setFilePreviewer(msg.value.blob, msg.value.data.type)
+    setFilePreviewer(msg.value.blob, msg.value.data.type, msg.value.data.name)
   }
 }
 
