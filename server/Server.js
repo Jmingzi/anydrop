@@ -24,7 +24,8 @@ export class Server {
         return
       }
       response.uid = uuidv4()
-      headers.push('Set-Cookie: uid=' + response.uid + '; SameSite=Strict; Secure')
+      // headers.push('Set-Cookie: uid=' + response.uid + '; SameSite=Strict; Secure')
+      headers.push('Set-Cookie: uid=' + response.uid + '; SameSite=Strict;')
     })
   }
 
