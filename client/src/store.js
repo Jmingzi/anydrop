@@ -110,7 +110,7 @@ export function setSelf (data) {
 }
 
 export function setChatList (data) {
-  console.log(`设置聊天人数 ${data.length}`)
+  // console.log(`设置聊天人数 ${data.length}`)
   chatList.value = data
   if (self.value) {
     setSelf(self.value)

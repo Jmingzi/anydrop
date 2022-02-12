@@ -57,7 +57,7 @@ function hideContextmenu () {
 
 function handleClick () {
   if (props.msg.blob) {
-    setFilePreviewer(props.msg.blob, props.msg.data.type)
+    setFilePreviewer(props.msg.blob, props.msg.data.type, props.msg.data.name)
   }
 }
 
