@@ -40,6 +40,7 @@ const index = props.id[props.id.length - 1].codePointAt() % 10 % 5
   align-items: center;
   justify-content: center;
   color: var(--text-color);
+  flex-shrink: 0;
 }
 .avatar.normal {
   width: 32px;
