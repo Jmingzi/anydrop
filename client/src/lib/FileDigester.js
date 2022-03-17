@@ -15,7 +15,7 @@ export class FileDigester {
     }
     this.offset += chunk.length
     this.progress = this.bufferViews.byteLength / this.size
-    if (this.bufferViews.byteLength >= this.size) {
+    if (this.offset >= this.size) {
       const blob = new Blob([this.bufferViews], { type: this.type })
       this.callback(blob)
     }

@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { MESSAGE, MESSAGE_TYPE, MESSAGE_STATUS, DEFAULT_MESSAGE } from '../../server/constant'
 import { FileChunk } from './lib/FileChunk'
 import { FileDigester } from './lib/FileDigester'
+import { useAudio } from './components/audio-notice'
 
 export const chatList = ref([])
 export const msgList = ref([])
@@ -9,6 +10,7 @@ export const self = ref({})
 
 let server = null
 const digesterMap = {}
+const { playAudio } = useAudio('receive')
 
 export function initStore (serverConnection) {
   server = serverConnection
@@ -82,6 +84,9 @@ export function addToMsgList (data, receipt = true) {
       originSender: data.sender,
       status: MESSAGE_STATUS.SENT
     })
+    if (data.type === MESSAGE.FILE || data.type === MESSAGE.TEXT) {
+      playAudio()
+    }
   }
   // 文件回执处理
   if (data.type === MESSAGE.FILE) {
@@ -121,6 +126,7 @@ export function sendFile (file) {
   const { id: originMsgId, sender: originSender } = sendMessage(file)
   // chunk 分片发送
   const fileChunk = new FileChunk(file, chunk => {
+    console.log('发送文件分片', chunk.byteLength)
     send(MESSAGE_TYPE.MSG, {
       // 将 ArrayBuffer 转换为 数组
       ...getMessageData(new Uint8Array(chunk).toString()),

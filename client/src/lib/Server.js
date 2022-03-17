@@ -99,12 +99,12 @@ export class Server {
   }
 
   onDisconnect () {
-    console.log('WS: server closed, Retry in 5 seconds...')
+    console.log('WS: server closed, Retry in 3 seconds...')
     if (this.reconnectTimer) {
       clearTimeout(this.reconnectTimer)
       this.reconnectTimer = null
     }
-    this.reconnectTimer = setTimeout(() => this.connect(), 5000)
+    this.reconnectTimer = setTimeout(() => this.connect(), 3000)
   }
 
   onVisibilityChange () {

@@ -12,6 +12,7 @@ const tools = [
       document.body.appendChild(input)
       input.click()
       input.onchange = e => {
+        console.log('文件选择完成', e.target.files.item(0).name)
         sendFile(e.target.files.item(0))
         // const r = new FileReader()
         // r.readAsDataURL(e.target.files.item(0))
@@ -20,10 +21,10 @@ const tools = [
         //   img.src = r.result
         //   document.body.appendChild(img)
         // }
+        setTimeout(() => {
+          document.body.removeChild(input)
+        }, 0)
       }
-      setTimeout(() => {
-        document.body.removeChild(input)
-      }, 0)
     }
   }
 ]

@@ -48,6 +48,7 @@ export class Server {
       user.lastBeat = Date.now()
     }
     if (Date.now() - user.lastBeat > timeout) {
+      console.log(`用户 ${user.id} ${user.name} 心跳超时，断开连接，当前在线人数：${this.getRooms({}).length}`)
       this.leaveRoom(user)
     } else {
       this.send(user, { type: MESSAGE_TYPE.PING })

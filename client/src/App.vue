@@ -1,13 +1,16 @@
 <script setup>
 import ChatWindow from './components/ChatWindow.vue'
 import FilePreviewer from './components/FilePreviewer.vue'
+import { useAudio } from './components/audio-notice'
 import { provide } from 'vue'
 
 const mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+const { AudioNotice } = useAudio()
 provide('mobile', mobile)
 </script>
 
 <template>
+  <AudioNotice />
   <ChatWindow :class="{ mobile }" />
   <FilePreviewer :class="{ mobile }" />
 </template>

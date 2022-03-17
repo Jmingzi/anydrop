@@ -8,7 +8,15 @@ const mobile = inject('mobile', false)
 </script>
 
 <template>
-  <div v-if="!mobile" class="chat-list">
+  <div class="chat-list__mobile" v-if="mobile">
+    <span
+      v-for="chat in chatList"
+      :key="chat.id"
+    >
+      {{ chat.id === self.id ? `我(${chat.name})` : chat.name }}
+    </span>
+  </div>
+  <div v-else class="chat-list">
     <div class="chat-list__top">
       <div class="chat-list__search">
         <span>搜索</span>
@@ -75,5 +83,21 @@ const mobile = inject('mobile', false)
 .chat-list__search span {
   color: #646464;
   font-size: 12px;
+}
+.chat-list__mobile {
+  position: absolute;
+  top: var(--header-height);
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  color: var(--text-system-color);
+  font-size: 12px;
+  padding: 5px 20px;
+  overflow: auto;
+  white-space: nowrap;
+}
+.chat-list__mobile span {
+  display: inline-block;
+  margin-right: 10px;
 }
 </style>

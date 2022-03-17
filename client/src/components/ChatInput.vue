@@ -1,13 +1,21 @@
 <script setup>
 import Tool from './InputTool.vue'
-import { ref } from 'vue'
+import { inject, ref } from 'vue'
 import { sendMessage } from '../store'
+import { useAudio } from './audio-notice'
 
+const mobile = inject('mobile', false)
+const { playAudio } = useAudio('send')
 const content = ref('')
+const textarea = ref(null)
 function send () {
   if (content.value) {
     sendMessage(content.value)
     content.value = ''
+    if (mobile) {
+      textarea.value.blur()
+    }
+    playAudio()
   }
 }
 </script>
@@ -17,7 +25,9 @@ function send () {
     <Tool />
     <textarea
       v-model="content"
+      :ref="v => textarea = v"
       @keyup.enter.prevent="send"
+      placeholder="按回车、换行发送消息..."
     />
   </div>
 </template>
@@ -38,5 +48,8 @@ function send () {
   font-size: 14px;
   background-color: inherit;
   color: var(--text-color);
+}
+.chat-input textarea::placeholder {
+  color: var(--text-system-color);
 }
 </style>
