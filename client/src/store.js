@@ -126,7 +126,7 @@ export function sendFile (file) {
   const { id: originMsgId, sender: originSender } = sendMessage(file)
   // chunk 分片发送
   const fileChunk = new FileChunk(file, chunk => {
-    console.log('发送文件分片', chunk.byteLength)
+    // console.log('发送文件分片', chunk.byteLength)
     send(MESSAGE_TYPE.MSG, {
       // 将 ArrayBuffer 转换为 数组
       ...getMessageData(new Uint8Array(chunk).toString()),
@@ -154,6 +154,7 @@ export function sendFile (file) {
 export function setFileChunk ({ originMsgId, originSender, data }) {
   const digester = digesterMap[originMsgId]
   digester.unchunk(data)
+  console.log(`接收到文件分片 ${digester.progress}`)
   // 更新文件进度
   updateMsgById(originMsgId, {
     progress: digester.progress

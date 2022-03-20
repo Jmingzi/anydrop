@@ -59,7 +59,10 @@ export class Server {
   }
 
   send (message) {
-    if (!this.isConnected()) return
+    if (!this.isConnected()) {
+      console.warn('WS: server not connected, message dropped', message.type)
+      return
+    }
     this.socket.send(JSON.stringify(message))
   }
 
@@ -89,7 +92,7 @@ export class Server {
           setFileReceiptProgress(message.data)
           break
         case MESSAGE_TYPE.PING:
-          console.log(`收到服务端心跳 ${formatTime()}`)
+          console.log(`心跳 ${formatTime()}`)
           this.send({ type: MESSAGE_TYPE.PONG })
           break
         default:
