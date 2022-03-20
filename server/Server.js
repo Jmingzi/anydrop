@@ -43,13 +43,13 @@ export class Server {
   }
 
   keepAlive (user) {
+    console.log(`timeoutIds: ${this.timeoutIds.join(',')}`)
     this.cancelKeepAlive(user)
     const timeout = 10000
     if (!user.lastBeat) {
       user.lastBeat = Date.now()
     }
-    console.log(`用户 ${user.id.split('-').pop()},${user.timerId} 心跳间隔：${(Date.now() - user.lastBeat) / 1000}s，当前在线人数：${this.getRooms({}).length}`)
-    console.log(`timeoutIds: ${this.timeoutIds.join(',')}`)
+    console.log(`用户 ${user.id.split('-').pop()} 心跳间隔：${(Date.now() - user.lastBeat) / 1000}s，当前在线人数：${this.getRooms({}).length}`)
     if (Date.now() - user.lastBeat > timeout * 2) {
       this.leaveRoom(user)
       console.log(`用户心跳超时 ${user.id.split('-').pop()} 断开连接，当前在线人数：${this.getRooms({}).length}`)

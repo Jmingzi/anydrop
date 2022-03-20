@@ -14,7 +14,7 @@ export class FileDigester {
       this.bufferViews.setUint8(this.offset + i, Number(chunk[i]))
     }
     this.offset += chunk.length
-    this.progress = this.bufferViews.byteLength / this.size
+    this.progress = this.offset / this.size
     if (this.offset >= this.size) {
       const blob = new Blob([this.bufferViews], { type: this.type })
       this.callback(blob)
