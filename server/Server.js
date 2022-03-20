@@ -22,7 +22,6 @@ export class Server {
   // { ip: { id: user } }
   rooms = {}
   wss = null
-  timeoutIds = []
 
   constructor (params) {
     this.wss = new WebSocketServer(params)
@@ -55,7 +54,6 @@ export class Server {
   }
 
   keepAlive (user) {
-    // console.log(`timeoutIds: ${this.timeoutIds.join(',')}`)
     this.cancelKeepAlive(user)
     const timeout = 10000
     if (!user.lastBeat) {
@@ -64,13 +62,11 @@ export class Server {
     if (Date.now() - user.lastBeat > timeout * 2) {
       this.leaveRoom(user)
       console.log(`---- 用户 ${user.id.split('-').pop()} 心跳超时，断开连接，当前在线人数：${this.getRooms({}).length} ----`)
-      console.log(`剩余 timeoutIds: ${this.timeoutIds.length} 个`)
     } else {
       this.send(user, { type: MESSAGE_TYPE.PING })
       user.timerId = setTimeout(() => {
         this.keepAlive(user)
       }, timeout)
-      this.timeoutIds.push(user.timerId)
       console.log(`用户 ${user.id.split('-').pop()} 心跳间隔：${(Date.now() - user.lastBeat) / 1000}s，当前在线人数：${this.getRooms({}).length}`)
     }
   }
@@ -78,7 +74,6 @@ export class Server {
   cancelKeepAlive (user) {
     if (user && user.timerId) {
       clearTimeout(user.timerId)
-      this.timeoutIds.splice(this.timeoutIds.indexOf(user.timerId), 1)
       user.timerId = null
     }
   }
