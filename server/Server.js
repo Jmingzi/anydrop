@@ -104,7 +104,7 @@ export class Server {
           this.leaveRoom(sender)
           break
         case MESSAGE_TYPE.PONG:
-          console.log(`收到客户端心跳 ${sender.id}`, formatTime())
+          console.log(`收到客户端心跳 ${sender.id.split('-').pop()}`, formatTime())
           sender.lastBeat = Date.now()
           break
         case MESSAGE_TYPE.ROOMS:
