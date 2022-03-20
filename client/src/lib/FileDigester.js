@@ -10,6 +10,10 @@ export class FileDigester {
 
   unchunk (chunkString) {
     const chunk = chunkString.split(',')
+    // todo for 循环会阻塞主线程，导致心跳超时
+    // 解决办法有 2 个：
+    // 1. 将 socket 内容传输改为 buffer 而不是 string
+    // 2. 超时判断的地方处理
     for (let i = 0; i < chunk.length; i++) {
       this.bufferViews.setUint8(this.offset + i, Number(chunk[i]))
     }

@@ -106,10 +106,6 @@ export class Server {
         case MESSAGE_TYPE.PONG:
           console.log(`收到客户端心跳 ${sender.id.split('-').pop()}`, formatTime())
           sender.lastBeat = Date.now()
-          // 如果房间不存在，则加入房间
-          if (!this.rooms[sender.ip] || !this.rooms[sender.ip][sender.id]) {
-            this.joinRoom(sender)
-          }
           break
         case MESSAGE_TYPE.ROOMS:
           this.send(sender, {
@@ -124,6 +120,11 @@ export class Server {
           })
           break
         case MESSAGE_TYPE.MSG:
+          if (message.data.type === 'file-chunk') {
+            // todo 客户端 for 循环心跳阻塞处理
+            // console.log('客户端 for 循环心跳阻塞处理')
+            sender.lastBeat = Date.now()
+          }
           needBroadcast = true
           break
         case MESSAGE_TYPE.RECEIPT:
