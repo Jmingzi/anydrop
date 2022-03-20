@@ -61,7 +61,6 @@ export class Server {
     if (!user.lastBeat) {
       user.lastBeat = Date.now()
     }
-    console.log(`用户 ${user.id.split('-').pop()} 心跳间隔：${(Date.now() - user.lastBeat) / 1000}s，当前在线人数：${this.getRooms({}).length}`)
     if (Date.now() - user.lastBeat > timeout * 2) {
       this.leaveRoom(user)
       console.log(`用户 ${user.id.split('-').pop()} 心跳超时，断开连接，当前在线人数：${this.getRooms({}).length}`)
@@ -72,6 +71,7 @@ export class Server {
         this.keepAlive(user)
       }, timeout)
       this.timeoutIds.push(user.timerId)
+      console.log(`用户 ${user.id.split('-').pop()} 心跳间隔：${(Date.now() - user.lastBeat) / 1000}s，当前在线人数：${this.getRooms({}).length}`)
     }
   }
 
