@@ -116,7 +116,7 @@ onBeforeUnmount(() => {
                 :style="{
                   backgroundImage: `conic-gradient(#fff ${msg.progress * 360}deg, transparent ${msg.progress * 360}deg 360deg)`
                 }">
-<!--                {{ (msg.progress * 100).toFixed(0) }}%-->
+                {{ (msg.progress * 100).toFixed(0) }}%
               </span>
             </span>
           </div>
