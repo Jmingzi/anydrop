@@ -64,8 +64,8 @@ export class Server {
     console.log(`用户 ${user.id.split('-').pop()} 心跳间隔：${(Date.now() - user.lastBeat) / 1000}s，当前在线人数：${this.getRooms({}).length}`)
     if (Date.now() - user.lastBeat > timeout * 2) {
       this.leaveRoom(user)
-      console.log(`用户心跳超时 ${user.id.split('-').pop()} 断开连接，当前在线人数：${this.getRooms({}).length}`)
-      console.log(`timeoutIds: ${this.timeoutIds.join(',')}`)
+      console.log(`用户 ${user.id.split('-').pop()} 心跳超时，断开连接，当前在线人数：${this.getRooms({}).length}`)
+      console.log(`剩余 timeoutIds: ${this.timeoutIds.length} 个`)
     } else {
       this.send(user, { type: MESSAGE_TYPE.PING })
       user.timerId = setTimeout(() => {
@@ -106,6 +106,10 @@ export class Server {
         case MESSAGE_TYPE.PONG:
           console.log(`收到客户端心跳 ${sender.id.split('-').pop()}`, formatTime())
           sender.lastBeat = Date.now()
+          // 如果房间不存在，则加入房间
+          if (!this.rooms[sender.ip] || !this.rooms[sender.ip][sender.id]) {
+            this.joinRoom(sender)
+          }
           break
         case MESSAGE_TYPE.ROOMS:
           this.send(sender, {
