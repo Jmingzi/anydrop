@@ -47,10 +47,10 @@ export class Server {
     if (!user.lastBeat) {
       user.lastBeat = Date.now()
     }
-    console.log(`用户 ${user.id} 心跳间隔：${(Date.now() - user.lastBeat) / 1000}s`)
+    console.log(`用户 ${user.id} 心跳间隔：${(Date.now() - user.lastBeat) / 1000}s，当前在线人数：${this.getRooms({}).length}`)
     if (Date.now() - user.lastBeat > timeout * 2) {
-      console.log(`用户 ${user.id} ${user.name} 心跳超时，断开连接，当前在线人数：${this.getRooms({}).length}`)
       this.leaveRoom(user)
+      console.log(`用户 ${user.id} ${user.name} 心跳超时，断开连接，当前在线人数：${this.getRooms({}).length}`)
     } else {
       this.send(user, { type: MESSAGE_TYPE.PING })
       user.timerId = setTimeout(() => {
