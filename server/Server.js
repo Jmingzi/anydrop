@@ -47,7 +47,8 @@ export class Server {
     if (!user.lastBeat) {
       user.lastBeat = Date.now()
     }
-    if (Date.now() - user.lastBeat > timeout) {
+    console.log(`用户 ${user.id} 心跳间隔：${(Date.now() - user.lastBeat) / 1000}s`)
+    if (Date.now() - user.lastBeat > timeout * 2) {
       console.log(`用户 ${user.id} ${user.name} 心跳超时，断开连接，当前在线人数：${this.getRooms({}).length}`)
       this.leaveRoom(user)
     } else {
