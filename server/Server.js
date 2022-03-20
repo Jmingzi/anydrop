@@ -63,7 +63,7 @@ export class Server {
     }
     if (Date.now() - user.lastBeat > timeout * 2) {
       this.leaveRoom(user)
-      console.log(`用户 ${user.id.split('-').pop()} 心跳超时，断开连接，当前在线人数：${this.getRooms({}).length}`)
+      console.log(`---- 用户 ${user.id.split('-').pop()} 心跳超时，断开连接，当前在线人数：${this.getRooms({}).length} ----`)
       console.log(`剩余 timeoutIds: ${this.timeoutIds.length} 个`)
     } else {
       this.send(user, { type: MESSAGE_TYPE.PING })

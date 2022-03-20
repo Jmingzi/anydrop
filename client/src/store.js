@@ -51,7 +51,7 @@ export function sendMessage (data) {
 }
 
 function send (type, data) {
-  server.socket.send(JSON.stringify({ type, data }))
+  server.send({ type, data })
 }
 
 export function getRooms () {
