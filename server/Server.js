@@ -43,7 +43,7 @@ export class Server {
   }
 
   keepAlive (user) {
-    console.log(`timeoutIds: ${this.timeoutIds.join(',')}`)
+    // console.log(`timeoutIds: ${this.timeoutIds.join(',')}`)
     this.cancelKeepAlive(user)
     const timeout = 10000
     if (!user.lastBeat) {
@@ -53,6 +53,7 @@ export class Server {
     if (Date.now() - user.lastBeat > timeout * 2) {
       this.leaveRoom(user)
       console.log(`用户心跳超时 ${user.id.split('-').pop()} 断开连接，当前在线人数：${this.getRooms({}).length}`)
+      console.log(`timeoutIds: ${this.timeoutIds.join(',')}`)
     } else {
       this.send(user, { type: MESSAGE_TYPE.PING })
       user.timerId = setTimeout(() => {
