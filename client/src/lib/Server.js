@@ -10,6 +10,18 @@ import {
 } from '../store'
 import { MESSAGE_TYPE, MESSAGE } from '../../../server/constant'
 
+const formatTime = () => {
+  const date = new Date()
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const hour = date.getHours()
+  const minute = date.getMinutes()
+  const second = date.getSeconds()
+
+  return [year, month, day].join('/') + ' ' + [hour, minute, second].join(':')
+}
+
 export class Server {
   socket = null
   reconnectTimer = null
@@ -77,6 +89,7 @@ export class Server {
           setFileReceiptProgress(message.data)
           break
         case MESSAGE_TYPE.PING:
+          console.log(`收到服务端心跳 ${formatTime()}`)
           this.send({ type: MESSAGE_TYPE.PONG })
           break
         default:

@@ -4,6 +4,18 @@ import { v4 as uuidv4 } from 'uuid'
 import { MESSAGE_TYPE } from './constant.js'
 import { parseCookie } from './utils.js'
 
+const formatTime = () => {
+  const date = new Date()
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const hour = date.getHours()
+  const minute = date.getMinutes()
+  const second = date.getSeconds()
+
+  return [year, month, day].join('/') + ' ' + [hour, minute, second].join(':')
+}
+
 export class Server {
   // 房间以 ip 为 key
   // 相同 ip 可以有多个设备同时在线
@@ -92,6 +104,7 @@ export class Server {
           this.leaveRoom(sender)
           break
         case MESSAGE_TYPE.PONG:
+          console.log(`收到客户端心跳 ${sender.id}`, formatTime())
           sender.lastBeat = Date.now()
           break
         case MESSAGE_TYPE.ROOMS:
