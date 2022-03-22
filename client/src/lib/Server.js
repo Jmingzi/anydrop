@@ -86,7 +86,8 @@ export class Server {
           break
         case MESSAGE_TYPE.MSG:
           message.data.type === MESSAGE.FILE_CHUNK
-            ? setTimeout(() => { setFileChunk(message.data) })
+            // ? setTimeout(() => { setFileChunk(message.data) })
+            ? new Promise((resolve) => { resolve() }).then(() => { setFileChunk(message.data) })
             : addToMsgList(message.data)
           break
         case MESSAGE_TYPE.RECEIPT:
