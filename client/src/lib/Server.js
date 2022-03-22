@@ -85,10 +85,17 @@ export class Server {
           getRooms()
           break
         case MESSAGE_TYPE.MSG:
-          message.data.type === MESSAGE.FILE_CHUNK
-            // ? setTimeout(() => { setFileChunk(message.data) })
-            ? new Promise((resolve) => { resolve() }).then(() => { setFileChunk(message.data) })
-            : addToMsgList(message.data)
+          if (message.data.type === MESSAGE.FILE_CHUNK) {
+            console.log('收到文件 chunk，持续心跳')
+            this.send({ type: MESSAGE_TYPE.PONG })
+            setFileChunk(message.data)
+          } else {
+            addToMsgList(message.data)
+          }
+          // message.data.type === MESSAGE.FILE_CHUNK
+          //   ? setFileChunk(message.data)
+          //   // ? new Promise((resolve) => { resolve() }).then(() => { setFileChunk(message.data) })
+          //   : addToMsgList(message.data)
           break
         case MESSAGE_TYPE.RECEIPT:
           setMsgReceipt(message.data)
