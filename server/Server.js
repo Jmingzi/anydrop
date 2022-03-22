@@ -186,7 +186,10 @@ export class Server {
       type: MESSAGE_TYPE.SYSTEM,
       data: `${user.name} 离开了房间`,
       timeout: true,
-      sender: user
+      sender: {
+        id: user.id,
+        name: user.name
+      }
     })
     delete this.rooms[user.ip][user.id]
     user.socket.terminate()
