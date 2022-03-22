@@ -55,26 +55,34 @@ export class Server {
 
   keepAlive (user) {
     this.cancelKeepAlive(user)
-    const timeout = 10000
+    const timeout = 30000
     if (!user.lastBeat) {
       user.lastBeat = Date.now()
     }
     if (Date.now() - user.lastBeat > timeout * 2) {
       this.leaveRoom(user)
-      console.log(`---- 用户 ${user.id.split('-').pop()} 心跳超时，断开连接，当前在线人数：${this.getRooms({}).length} ----`)
+      console.log(`---- 用户 ${user.id.split('-').pop()} 超时断开，当前在线人数：${this.getRooms({}).length} lastBeat ${(Date.now() - user.lastBeat) / 1000}s ----`)
     } else {
       this.send(user, { type: MESSAGE_TYPE.PING })
-      user.timerId = setTimeout(() => {
+      if (!user.timerId) {
+        user.timerId = []
+      }
+      user.timerId.push(setTimeout(() => {
         this.keepAlive(user)
-      }, timeout)
-      console.log(`用户 ${user.id.split('-').pop()} 心跳间隔：${(Date.now() - user.lastBeat) / 1000}s，当前在线人数：${this.getRooms({}).length}`)
+      }, timeout))
     }
   }
 
   cancelKeepAlive (user) {
     if (user && user.timerId) {
-      clearTimeout(user.timerId)
-      user.timerId = null
+      if (user.timerId.length > 1) {
+        console.log(`用户 ${user.id.split('-').pop()} 心跳 timer 异常，取消`)
+      }
+      user.timerId.forEach((timerId, i) => {
+        clearTimeout(timerId)
+        user.timerId.splice(i, 1)
+      })
+      // user.timerId = null
     }
   }
 
@@ -99,8 +107,13 @@ export class Server {
           this.leaveRoom(sender)
           break
         case MESSAGE_TYPE.PONG:
-          console.log(`收到客户端心跳 ${sender.id.split('-').pop()}`, formatTime())
-          sender.lastBeat = Date.now()
+          console.log(`${sender.id.split('-').pop()} 收到客户端心跳`, formatTime())
+          if (this.findUserById(sender.id)) {
+            sender.lastBeat = Date.now()
+          } else {
+            console.log('用户已离开，不响应客户端心跳')
+            this.cancelKeepAlive(sender)
+          }
           break
         case MESSAGE_TYPE.ROOMS:
           this.send(sender, {
@@ -115,11 +128,11 @@ export class Server {
           })
           break
         case MESSAGE_TYPE.MSG:
-          if (message.data.type === 'file-chunk') {
-            // todo 客户端 for 循环心跳阻塞处理
-            // console.log('客户端 for 循环心跳阻塞处理')
-            sender.lastBeat = Date.now()
-          }
+          // if (message.data.type === 'file-chunk') {
+          //   // todo 客户端 for 循环心跳阻塞处理
+          //   // console.log('客户端 for 循环心跳阻塞处理')
+          //   sender.lastBeat = Date.now()
+          // }
           needBroadcast = true
           break
         case MESSAGE_TYPE.RECEIPT:
@@ -133,11 +146,12 @@ export class Server {
         this.broadcast(sender, message)
       }
     } catch (e) {
-      console.error()
+      console.error(e)
     }
   }
 
   broadcast (from, message) {
+    const others = !message.timeout
     if (message.data && message.data.id) {
       message.data = {
         ...message.data,
@@ -147,7 +161,7 @@ export class Server {
     }
     for (const sameIpUser of Object.values(this.rooms)) {
       for (const user of Object.values(sameIpUser)) {
-        if (user.id === from.id) {
+        if (others && user.id === from.id) {
           continue
         }
         if (user.socket.readyState === WebSocket.OPEN) {
@@ -158,7 +172,9 @@ export class Server {
   }
 
   send (user, message) {
-    user.socket.send(JSON.stringify(message))
+    if (user) {
+      user.socket.send(JSON.stringify(message))
+    }
   }
 
   leaveRoom (user) {
@@ -168,7 +184,8 @@ export class Server {
     // 通知其他人
     this.broadcast(user, {
       type: MESSAGE_TYPE.SYSTEM,
-      data: `${user.name} 离开了房间`
+      data: `${user.name} 离开了房间`,
+      timeout: true
     })
     delete this.rooms[user.ip][user.id]
     user.socket.terminate()

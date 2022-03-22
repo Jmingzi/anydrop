@@ -6,7 +6,8 @@ import {
   addToMsgList,
   setMsgReceipt,
   setFileChunk,
-  setFileReceiptProgress
+  setFileReceiptProgress,
+  noticeSelfDisconnect
 } from '../store'
 import { MESSAGE_TYPE, MESSAGE } from '../../../server/constant'
 
@@ -77,12 +78,15 @@ export class Server {
           setSelf(message.data)
           break
         case MESSAGE_TYPE.SYSTEM:
-          console.log(message.data)
+          console.log(message)
+          if (message.timeout) {
+            noticeSelfDisconnect(message)
+          }
           getRooms()
           break
         case MESSAGE_TYPE.MSG:
           message.data.type === MESSAGE.FILE_CHUNK
-            ? setFileChunk(message.data)
+            ? setTimeout(() => { setFileChunk(message.data) })
             : addToMsgList(message.data)
           break
         case MESSAGE_TYPE.RECEIPT:

@@ -122,6 +122,13 @@ export function setChatList (data) {
   }
 }
 
+export function noticeSelfDisconnect (message) {
+  if (message.sender?.id === self.value?.id) {
+    confirm('你已经下线，是否重新登录？')
+    server.connect()
+  }
+}
+
 export function sendFile (file) {
   const { id: originMsgId, sender: originSender } = sendMessage(file)
   // chunk 分片发送
