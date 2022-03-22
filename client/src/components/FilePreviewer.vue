@@ -13,6 +13,7 @@ const isText = computed(() => type.value.includes('text') || type.value.includes
       <div class="file-previewer__close" @click="closePreview">
         <svg t="1644297954520" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5085" width="15" height="15"><path d="M512 505.06752m-431.83616 0a431.83616 431.83616 0 1 0 863.67232 0 431.83616 431.83616 0 1 0-863.67232 0Z" fill="#A7A6A6" p-id="5086" data-spm-anchor-id="a313x.7781069.0.i19" class="selected"></path><path d="M720.6912 661.5552l-52.20352 52.20352L512 557.27104l-156.48768 156.48768L303.3088 661.5552l156.4928-156.48768L303.3088 348.57984l52.16256-52.1984 156.5184 156.49792 156.49792-156.49792 52.20352 52.1984-156.50304 156.4928z" fill="#171717" p-id="5087" data-spm-anchor-id="a313x.7781069.0.i18" class=""></path></svg>
       </div>
+      <span @click="downloadPreview()">下载</span>
     </div>
     <div class="file-previewer__box">
       <div v-if="isImage" class="file-previewer__img">
@@ -47,9 +48,12 @@ const isText = computed(() => type.value.includes('text') || type.value.includes
 .file-previewer__title {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 38px;
   background-color: var(--chat-bg-color);
   padding: 0 10px;
+  color: var(--text-system-color);
+  font-size: 12px;
 }
 .file-previewer__box {
   overflow: auto;

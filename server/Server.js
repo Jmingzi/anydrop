@@ -55,7 +55,7 @@ export class Server {
 
   keepAlive (user) {
     this.cancelKeepAlive(user)
-    const timeout = 30000
+    const timeout = 5000
     if (!user.lastBeat) {
       user.lastBeat = Date.now()
     }

@@ -48,7 +48,11 @@ export function downloadBlob (blob, filename) {
 }
 
 export function downloadPreview () {
-  downloadBlob(state.blob, state.name)
+  if (state.blob) {
+    downloadBlob(state.blob, state.name)
+  } else {
+    console.log('文件接收中，请稍后')
+  }
 }
 
 export function useFilePreviewer () {
