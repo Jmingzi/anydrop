@@ -133,28 +133,30 @@ export function sendFile (file) {
   const { id: originMsgId, sender: originSender } = sendMessage(file)
   // chunk 分片发送
   const fileChunk = new FileChunk(file, chunk => {
-    console.log('发送文件分片', chunk.byteLength)
-    send(MESSAGE_TYPE.MSG, {
-      // 将 ArrayBuffer 转换为 数组
-      ...getMessageData(new Uint8Array(chunk).toString()),
-      type: MESSAGE.FILE_CHUNK,
-      progress: chunk.byteLength / file.size,
-      originMsgId,
-      originSender
+    setTimeout(() => {
+      console.log('发送文件分片', chunk.byteLength)
+      send(MESSAGE_TYPE.MSG, {
+        // 将 ArrayBuffer 转换为 数组
+        ...getMessageData(new Uint8Array(chunk).toString()),
+        type: MESSAGE.FILE_CHUNK,
+        progress: chunk.byteLength / file.size,
+        originMsgId,
+        originSender
+      })
+      if (fileChunk.isFileEnd()) {
+        console.log('文件发送完成')
+        const data = {
+          status: MESSAGE_STATUS.SENT,
+          blob: new Blob([file.slice()], { type: file.type })
+        }
+        if (chatList.value.length === 1) {
+          // 只有自己
+          data.status = MESSAGE_STATUS.ERROR_NO_USER
+          data.progress = 1
+        }
+        updateMsgById(originMsgId, data)
+      }
     })
-    if (fileChunk.isFileEnd()) {
-      console.log('文件发送完成')
-      const data = {
-        status: MESSAGE_STATUS.SENT,
-        blob: new Blob([file.slice()], { type: file.type })
-      }
-      if (chatList.value.length === 1) {
-        // 只有自己
-        data.status = MESSAGE_STATUS.ERROR_NO_USER
-        data.progress = 1
-      }
-      updateMsgById(originMsgId, data)
-    }
   })
 }
 
