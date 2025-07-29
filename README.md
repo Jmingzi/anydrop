@@ -4,7 +4,7 @@
 
 ![](./screenshot.png)
 
-## todo
+## 特性
 
 - [x] 预览图片、txt、json 文件
 - [x] 心跳、超时断连
